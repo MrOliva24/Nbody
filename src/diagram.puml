@@ -1,0 +1,80 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+class Main {
++ {static} main (args : String[])
+}
+
+
+class Body {
+- position : Vector
+- velocity : Vector
+- mass : double
++ move (f:Vector, dt:double)
++ forceFrom (b : Body) : Vector
++ getPosition() : Vector
++ toString()
+}
+
+abstract class Universe {
+# numBodies : int
+# radius : double
++ Universe (fname : String)
++ Universe (numBodies : int, type : null)
++ Universe (numBodies : int)
++ update (dt : double)
++ getAllPositions() : Vector
++ getRadius() : double
+}
+
+class GenericUniverse {
+GenericUniverse(fname : String)
+}
+
+class CentralConfiguration {
+CentralConfiguration(n : int)
+}
+
+class Nplus1 {
+Nplus1(n : int)
+}
+
+class NBodySimulator {
+- timeStep : double
+- pauseTime : int
+- trace : boolean
++ NBodySimulator (String fname : String,  dt : double,
+      \t pauseTime : int, do_trace : boolean)
++ drawUniverse()
++ simulate()
+- createCanvas()
+}
+
+Universe -> "1.." Body : bodies
+NBodySimulator -> "1" Universe
+Universe <|-- GenericUniverse
+Universe <|-- CentralConfiguration
+Universe <|-- Nplus1
+
+
+note right of Main
+//...
+if (typeUniverse.equals("generic")) {
+    String fname = args[4];
+    universe = new GenericUniverse(fname);
+} else if (typeUniverse.equals("central_configuration")) {
+    int n = Integer.parseInt(args[4]);
+    universe = new CentralConfiguration(n);
+} else {
+    int n = Integer.parseInt(args[4]);
+    universe = new Nplus1(n);
+}
+NBodySimulator simulator = new NBodySimulator(universe, dt, pauseTime, trace);
+simulator.simulate();
+end note
+
+
+Main -[hidden]down-> NBodySimulator
+
+@enduml

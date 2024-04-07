@@ -1,0 +1,1 @@
+Run with 4 parameters dt (delta time between position and velocity calculation), pauseTime, trace (boolean to decide if you want the trace of the body to be drawn write trace to true or ntrace to false) and fname (data/{2body,3body,4body,planets}.txt to set the number of bodies in the simulation)
